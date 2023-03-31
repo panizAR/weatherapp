@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>weather app</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="tempreture-box">
+        <form action="" id="form-search">
+          <div class="row d-flex">
+            <div class="col-9">
+              <input
+                type="search"
+                placeholder="type a city"
+                class="form-control"
+                id="search-input"
+              />
+            </div>
+            <div class="col-3">
+              <input
+                type="submit"
+                class="btn btn-primary form-control"
+                value="search"
+              />
+            </div>
+          </div>
+        </form>
+        <h1>Sydney NSW, Australia</h1>
+        <ul>
+          <li><span id="day">Wednesday</span> <span id="clock">22:00</span></li>
+
+          <li id="tempdescription">Partly Cloudy</li>
+        </ul>
+        <div class="row">
+          <div class="col-6">
+            <img
+              src="https://ssl.gstatic.com/onebox/weather/64/partly_cloudy.png"
+              alt="Cloudy icon"
+              class="weather-icon"
+            />
+            <div class="d-inline-block">
+              <span class="temperature">19</span
+              ><span class="units"
+                ><span id="cili">°C</span> | <span id="faren">°F</span></span
+              >
+            </div>
+          </div>
+          <div class="col-6">
+            <ul>
+              <li>Precipitation: 0%</li>
+              <li>Humidity: <span class="humid">77</span>%</li>
+              <li>Wind: 8 km/h</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
