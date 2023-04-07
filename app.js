@@ -1,15 +1,30 @@
-//search
-let formsearch = document.querySelector("#form-search");
-
-let faren = document.querySelector("#faren");
+//click faren
 function farentem(event) {
   event.preventDefault();
   let temelement = document.querySelector(".temperature");
-  let f = (temp * 9) / 5 + 32;
-  temelement.innerHTML = f;
-}
-faren.addEventListener("click", farentem);
+  let faren = (temp * 9) / 5 + 32;
+  temelement.innerHTML = Math.round(faren);
 
+  cilielement.classList.remove("active");
+  farenelement.classList.add("active");
+}
+let farenelement = document.querySelector("#faren");
+farenelement.addEventListener("click", farentem);
+
+//click cili
+function cilitem(event) {
+  event.preventDefault();
+  let temelement = document.querySelector(".temperature");
+  let cili = temp;
+  temelement.innerHTML = Math.round(cili);
+
+  cilielement.classList.add("active");
+  farenelement.classList.remove("active");
+}
+let cilielement = document.querySelector("#cili");
+cilielement.addEventListener("click", cilitem);
+
+//weather main
 function weather(response) {
   console.log(response.data);
 
@@ -47,8 +62,12 @@ function weather(response) {
   let humidity = document.querySelector(".humid");
   humidity.innerHTML = Math.round(response.data.main.humidity);
 
+  // Wind
+  let Wind = document.querySelector(".Wind");
+  Wind.innerHTML = Math.round(response.data.wind.speed * 3.6);
+
   // temp
-  let temp = Math.round(response.data.main.temp);
+  temp = Math.round(response.data.main.temp);
   let temperature = document.querySelector(".temperature");
   temperature.innerHTML = `${temp}°c`;
 
@@ -61,8 +80,12 @@ function weather(response) {
   //icon
   let icon = response.data.weather[0].icon;
   let imgelement = document.querySelector(".weather-icon");
-  imgelement.setAttribute("src","")
+  imgelement.setAttribute(
+    "src",
+    `https://openweathermap.org/img/wn/${icon}@2x.png`
+  );
 }
+let temp = null;
 
 function searchcity(event) {
   event.preventDefault();
@@ -77,5 +100,7 @@ function searchcity(event) {
   let url = `http://api.openweathermap.org/data/2.5/weather?q=${cityname}&units=metric&appid=${apiKey}`;
   axios.get(url).then(weather);
 }
+//search
+let formsearch = document.querySelector("#form-search");
 
 formsearch.addEventListener("submit", searchcity);
