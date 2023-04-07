@@ -29,6 +29,9 @@ h1 {
   line-height: 28px;
   margin: 0;
 }
+h1::first-letter {
+  text-transform: capitalize;
+}
 ul {
   margin: 0 0 10px;
   padding: 0 !important;

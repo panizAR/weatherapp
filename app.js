@@ -1,59 +1,5 @@
-let date = new Date();
-
-let days = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-];
-
-let day = days[date.getDay()];
-console.log(day);
-
-let dayelement = document.querySelector("#day");
-dayelement.innerHTML = day;
-
-//clock
-let hour = date.getHours();
-let min = date.getMinutes();
-
-let clocklement = document.querySelector("#clock");
-clocklement.innerHTML = `${hour}:${min}`;
-
 //search
 let formsearch = document.querySelector("#form-search");
-
-function weather(response) {
-  console.log(response.data.main.humidity);
-  let humidity = document.querySelector(".humid");
-  humidity.innerHTML = response.data.main.humidity;
-
-  console.log(response.data.main.temp);
-  let temp = Math.round(response.data.main.temp);
-  let temperature = document.querySelector(".temperature");
-  temperature.innerHTML = `${temp}°c`;
-
-  let tempdescription = response.data.weather[0].description;
-  console.log(tempdescription);
-  let tempdescriptionelement = document.querySelector("#tempdescription");
-  tempdescriptionelement.innerHTML = tempdescription;
-}
-
-function searchcity(event) {
-  event.preventDefault();
-  let cityname = document.querySelector("#search-input").value;
-  let htext = document.querySelector("h1");
-  htext.innerHTML = cityname;
-
-  console.log(cityname);
-  let apiKey = "bb0df6985c2eab6a171d64a6bacbb4e1";
-  let url = `http://api.openweathermap.org/data/2.5/weather?q=${cityname}&units=metric&appid=${apiKey}`;
-  axios.get(url).then(weather);
-}
-formsearch.addEventListener("submit", searchcity);
 
 let faren = document.querySelector("#faren");
 function farentem(event) {
@@ -63,3 +9,73 @@ function farentem(event) {
   temelement.innerHTML = f;
 }
 faren.addEventListener("click", farentem);
+
+function weather(response) {
+  console.log(response.data);
+
+  //get time
+  let date = new Date(response.data.dt * 1000);
+  console.log(date);
+
+  //day
+  let days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  let day = days[date.getDay()];
+  let dayelement = document.querySelector("#day");
+  dayelement.innerHTML = day;
+
+  //clock
+  let hour = date.getHours();
+  if (hour <= 9) {
+    hour = `0${hour}`;
+  }
+  let min = date.getMinutes();
+  if (min <= 9) {
+    min = `0${min}`;
+  }
+  let clocklement = document.querySelector("#clock");
+  clocklement.innerHTML = `${hour}:${min}`;
+
+  // humidity
+  let humidity = document.querySelector(".humid");
+  humidity.innerHTML = Math.round(response.data.main.humidity);
+
+  // temp
+  let temp = Math.round(response.data.main.temp);
+  let temperature = document.querySelector(".temperature");
+  temperature.innerHTML = `${temp}°c`;
+
+  // tempdescription
+  let tempdescription = response.data.weather[0].description;
+  console.log(tempdescription);
+  let tempdescriptionelement = document.querySelector("#tempdescription");
+  tempdescriptionelement.innerHTML = tempdescription;
+
+  //icon
+  let icon = response.data.weather[0].icon;
+  let imgelement = document.querySelector(".weather-icon");
+  imgelement.setAttribute("src","")
+}
+
+function searchcity(event) {
+  event.preventDefault();
+
+  //get city name
+  let cityname = document.querySelector("#search-input").value;
+  let cityelement = document.querySelector("h1");
+  cityelement.innerHTML = cityname;
+
+  //api
+  let apiKey = "bb0df6985c2eab6a171d64a6bacbb4e1";
+  let url = `http://api.openweathermap.org/data/2.5/weather?q=${cityname}&units=metric&appid=${apiKey}`;
+  axios.get(url).then(weather);
+}
+
+formsearch.addEventListener("submit", searchcity);
