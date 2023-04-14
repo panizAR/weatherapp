@@ -27,6 +27,8 @@ cilielement.addEventListener("click", cilitem);
 //weather main
 function weather(response) {
   console.log(response.data);
+  let forca = response.data.coord;
+  forcast(forca);
 
   //get time
   let date = new Date(response.data.dt * 1000);
@@ -104,3 +106,50 @@ function searchcity(event) {
 let formsearch = document.querySelector("#form-search");
 
 formsearch.addEventListener("submit", searchcity);
+
+function forcastweather(response) {
+  console.log(response.data.daily);
+  let days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  let weektempelement = document.querySelector(".tempweek");
+  let weektempe = `<div class="row">`;
+  days.forEach(function Forecasttep(day) {
+    weektempe =
+      weektempe +
+      `<div class="col-2">
+            <div class="tempweek-day">${day}</div>
+            <div class="tempweek-icon">
+              <img
+                src="https://ssl.gstatic.com/onebox/weather/64/partly_cloudy.png"
+                alt="Cloudy icon"
+                class="weather-icon"
+              />
+            </div>
+            <div>
+              <span class="tempweek-maxtemp"> 32 </span>
+              <span class="tempweek-mintemp"> 2 </span>
+            </div>
+          </div>`;
+  });
+  weektempe = weektempe + `</div>`;
+  weektempelement.innerHTML = weektempe;
+}
+function forcast(forca) {
+  let forcastdata = forca;
+  let lat = forcastdata.lat;
+  let lon = forcastdata.lon;
+
+  //api
+  let apiKey = "2ff29bed3181c3526c35cc5408037f85";
+  let url = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+
+  console.log(url);
+  axios.get(url).then(forcastweather);
+}
