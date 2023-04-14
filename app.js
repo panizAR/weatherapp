@@ -109,34 +109,35 @@ formsearch.addEventListener("submit", searchcity);
 
 function forcastweather(response) {
   console.log(response.data.daily);
-  let days = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
+  let forcastdata = response.data.daily;
   let weektempelement = document.querySelector(".tempweek");
   let weektempe = `<div class="row">`;
-  days.forEach(function Forecasttep(day) {
-    weektempe =
-      weektempe +
-      `<div class="col-2">
-            <div class="tempweek-day">${day}</div>
+  forcastdata.forEach(function (forcastday, index) {
+    if (index < 6) {
+      weektempe =
+        weektempe +
+        `<div class="col-2">
+            <div class="tempweek-day">${formatday(forcastday.dt)}</div>
             <div class="tempweek-icon">
               <img
-                src="https://ssl.gstatic.com/onebox/weather/64/partly_cloudy.png"
+                src="https://openweathermap.org/img/wn/${
+                  forcastday.weather[0].icon
+                }@2x.png";
                 alt="Cloudy icon"
                 class="weather-icon"
+                width="50px"
               />
             </div>
             <div>
-              <span class="tempweek-maxtemp"> 32 </span>
-              <span class="tempweek-mintemp"> 2 </span>
+              <span class="tempweek-maxtemp"> ${Math.round(
+                forcastday.temp.max
+              )}°</span>
+              <span class="tempweek-mintemp"> ${Math.round(
+                forcastday.temp.min
+              )}°</span>
             </div>
           </div>`;
+    }
   });
   weektempe = weektempe + `</div>`;
   weektempelement.innerHTML = weektempe;
@@ -152,4 +153,18 @@ function forcast(forca) {
 
   console.log(url);
   axios.get(url).then(forcastweather);
+}
+function formatday(day) {
+  let newdate = new Date(day * 1000);
+  let forcasrtday = newdate.getDay();
+  let forcasrtdaydays = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  return forcasrtdaydays[forcasrtday];
 }
